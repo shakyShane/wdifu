@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+    <style type="text/css">
+        .diff-box {
+            position: relative;
+
+        }
+        .diff-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .diff-img {
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        .dif-slider {
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{site.title}}</h1>
+        <p class="lead">This page is showing the difference between commit {{#config.report.hashes}}<code>{{.}}</code>{{$sep " & "}}{{/config.report.hashes}}</b></p>
+    </div>
+
+    {{#config.report.failures}}
+        <h3>Failure: {{math @index "+" 1}}
+            <button class="btn btn-default"
+                    data-show-diff=".diff-{{math @index "+" 1}}"
+                    data-index="{{math @index "+" 1}}">Toggle Diff</button></h3>
+        <div class="dif-slider">
+            <input data-diff-slider="{{math @index "+" 1}}" type="range" min="0" max="100" step="5" value="90" />
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-6">
+                <p><b>Commit:</b> <code>{{hashes.[0]}}</code></p>
+                <ul>
+                    <li>Author: Shane Osbourne</li>
+                    <li>Date: 11th November, 2014</li>
+                    <li>{{file1}}</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p><b>Commit:</b> <code>{{hashes.[1]}}</code></p>
+                <ul>
+                    <li>Author: Shane Osbourne</li>
+                    <li>Date: 11th November, 2014</li>
+                    <li>{{file2}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="diff-box">
+                    <img src="{{file1}}"    alt="" />
+                    <img src="{{diffFile}}" alt="" class="diff-img diff-{{math @index "+" 1}}"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="diff-box">
+                    <img src="{{file2}}" alt=""/>
+                    <img src="{{diffFile}}" alt="" class="diff-img diff-{{math @index "+" 1}}"/>
+                </div>
+            </div>
+        </div>
+    {{/config.report.failures}}
+</div>
+
+<!-- /container -->
+<script type="text/javascript">
+    var diff    = document.querySelectorAll(".diff-img");
+    var btns    = document.querySelectorAll("[data-show-diff]");
+    var sliders = document.querySelectorAll("[data-diff-slider]");
+
+    var sm      = [].map.call(btns, function (button) {
+        return {
+            index: button.dataset.index,
+            imgs: document.querySelectorAll(".diff-" + button.dataset.index),
+            state: "off",
+            opacity: "0.90"
+        }
+    });
+
+    document.addEventListener("click", function (evt) {
+
+        if (evt.target.tagName === "BUTTON") {
+
+            evt.preventDefault();
+
+            var target   = evt.target.dataset.show;
+            var index    = evt.target.dataset.index;
+            var sliderVal = document.querySelector('[data-diff-slider="' + index + '"]');
+            var item;
+
+            var curr = sm.filter(function (item) {
+                return item.index === index;
+            });
+
+            if (curr.length) {
+                item = curr[0];
+            } else {
+                return;
+            }
+
+            if (item.state === "on") {
+                item.state   = "off";
+                item.opacity = "0";
+            } else {
+                item.state   = "on";
+                item.opacity = sliderVal.value/100;
+            }
+
+            updateElems(curr[0].imgs, curr[0].opacity);
+        }
+    });
+
+    [].forEach.call(sliders, function (slider) {
+
+        slider.addEventListener("change", function (evt) {
+
+            var index = this.dataset.diffSlider;
+            var item;
+
+            var curr = sm.filter(function (item) {
+                return item.index === index;
+            });
+
+            if (curr.length) {
+                item = curr[0];
+            } else {
+                return;
+            }
+
+            if (this.value/100 > 0) {
+                item.state = "on";
+            }
+
+            item.opacity = this.value/100;
+
+            updateElems(item.imgs, item.opacity);
+        })
+    })
+
+    function updateElems (elems, opacity) {
+        [].forEach.call(elems, function (item) {
+            item.style.opacity = opacity;
+        });
+    }
+</script>
+</body>
+</html>
