@@ -29,7 +29,7 @@
       "report": {
         "status": "fail",
         "report": {
-          "numpix": "6412",
+          "numpix": "5921",
           "outfile": "screenshots/diffs/homepage-2.diff.png"
         },
         "error": false

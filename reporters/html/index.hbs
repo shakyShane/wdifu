@@ -1,0 +1,39 @@
+---
+layout: "parent.hbs"
+---
+
+{{#section name="header"}}
+
+    <h1>Report from: {{site.opts.base}}</h1>
+    <hr/>
+    <p>
+        <button class="btn btn-default" data-toggle="overlay">Toggle Overlays</button>
+    </p>
+    <div class="dif-slider">
+        <input data-diff-slider type="range" min="0" max="100" step="5" value="90" />
+    </div>
+
+{{/section}}
+
+<div class="row">
+    <div class="col-md-6">
+        <p><b>Commit:</b> <code>{{site.opts.tests.[0].hash}}</code></p>
+        <ul>
+            <!--<li>Author: Shane Osbourne</li>-->
+            <!--<li>Date: 11th November, 2014</li>-->
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <p><b>Commit:</b> <code>{{site.opts.tests.[1].hash}}</code></p>
+        <ul>
+            <!--<li>Author: Shane Osbourne</li>-->
+            <!--<li>Date: 11th November, 2014</li>-->
+        </ul>
+    </div>
+</div>
+{{ inc src="image-list.hbs" }}
+
+{{#section name="foot-js"}}
+    {{inc src="js.html"}}
+{{/section}}
+

@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-6">
+        {{#each site.images}}
+            {{#if this.fail}}
+                <div class="diff-box">
+                    <img src="{{this.path1}}" alt=""/>
+                    <img src="{{this.report.report.outfile}}" alt="" class="diff-img diff-{{math @index "+" 1}}"/>
+                </div>
+            {{else}}
+                <div>
+                    <img src="{{this.path1}}" alt=""/>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+    <div class="col-md-6">
+        {{#each site.images}}
+            {{#if this.fail}}
+                <div class="diff-box">
+                    <img src="{{this.path2}}" alt=""/>
+                    <img src="{{this.report.report.outfile}}" alt="" class="diff-img diff-{{math @index "+" 1}}"/>
+                </div>
+            {{else}}
+                <div>
+                    <img src="{{this.path1}}" alt=""/>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+</div>

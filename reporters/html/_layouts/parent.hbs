@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+    <style type="text/css">
+        {{ inc src="styles.css" }}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        {{ $yield name="header" }}
+    </div>
+    <main>
+        {{ content }}
+    </main>
+</div>
+
+    {{ $yield name="foot-js" }}
+
+</body>
+</html>

@@ -10,7 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "async": "^0.9.0",
-    "eazy-logger": "^1.5.0"
+    "eazy-logger": "^1.5.0",
+    "gulp": "^3.8.10"
   },
   "dependencies": {
     "async": "^0.9.0",

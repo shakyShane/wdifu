@@ -3,7 +3,6 @@ var merger = require("opt-merger");
 var async = require("async");
 var comp = require("./lib/compare");
 var path = require("path");
-var fs = require("fs-extra");
 var compare = require("img-compare");
 var logger = require("./lib/logger").logger;
 
@@ -14,8 +13,7 @@ var defaults = {
 
 module.exports = function (config, cb) {
     var opts = merger.set({simple: true}).merge(defaults, config);
-    opts.logger = logger;
-    screener(opts, function (err, out) {
+    screener(opts, logger, function (err, out) {
         if (err) {
             throw err;
         }
@@ -24,7 +22,7 @@ module.exports = function (config, cb) {
 };
 
 function doImageComparisons(opts) {
-    opts.logger.info("Running image comparisons...");
+    logger.info("Running image comparisons...");
     var images = getImageData(opts);
     comp(images, opts, function (err, out) {
         if (err) {
@@ -35,7 +33,7 @@ function doImageComparisons(opts) {
 }
 
 function runReport(opts, out) {
-    fs.writeJsonFileSync("./report.json", out);
+    require("./reporters/html/html")(opts, out, logger);
 }
 
 function getJsonPath(opts, i) {
@@ -44,7 +42,7 @@ function getJsonPath(opts, i) {
             path.join(
                 opts.outDir, item.hash.slice(0, 8) + "-images.json"
             )
-        )).images;
+        ));
     });
 }
 

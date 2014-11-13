@@ -70,7 +70,7 @@ function screengrabOnePage(flow, opts, state) {
             flow.execute(function () {
                 var info = getScreenFileInfo(i, val, opts);
                 outfiles.images.push(info);
-                return doScreenGrab(i, val, info);
+                doScreenGrab(i, val, info);
             }).then(function (out) {
                 var imgjson = path.join(opts.outDir, opts.hash.slice(0, 8) + "-images.json");
                 fs.writeJsonFileSync(imgjson, outfiles);
