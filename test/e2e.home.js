@@ -2,29 +2,17 @@
  *
  */
 // abstract writing screen shot to a file
-//var fs   = require('fs');
 var path = require('path');
-var fs = require('fs-extra');
+var _    = require('lodash');
+var fs   = require('fs-extra');
 
 function writeScreenShot(data, dir, filename) {
     fs.ensureDirSync(dir);
-    var stream = fs.createWriteStream(path.join(dir, filename));
+    var fileout = path.join(dir, filename);
+    var stream = fs.createWriteStream(fileout);
     stream.write(new Buffer(data, 'base64'));
     stream.end();
-    if (!process.env["WDIFU_OUT"]) {
-        process.env["WDIFU_OUT"] = filename;
-    }  else {
-        process.env["WDIFU_OUT"] += filename;
-    }
-}
-
-function createScreenshotName(filepath) {
-    console.log(path.basename(filepath));
-    return "screenshots/" + path.basename(filepath) + ".png"
-}
-
-function getScreens (height, increment) {
-    console.log(Math.ceil(height / increment));
+    return fileout;
 }
 
 describe('Section Navigation', function() {
@@ -42,7 +30,7 @@ describe('Section Navigation', function() {
         var flow = protractor.promise.controlFlow();
         paths.forEach(function (url) {
             browser.get(url);
-            screengrabOnePage({
+            screengrabOnePage(flow, {
                 increment: increment,
                 hash: hash,
                 url: url,
@@ -50,7 +38,7 @@ describe('Section Navigation', function() {
             });
         });
         flow.execute(function () {
-            process.env["SHANE"] = "awes";
+            fs.writeJsonFileSync("./json.json", {name: "shane"});
         })
     });
 });
@@ -59,10 +47,9 @@ function getFilename (url, i) {
     return path.basename(url).replace(path.extname(url), "") + "-" + i + ".png";
 }
 
-function screengrabOnePage(opts, state) {
+function screengrabOnePage(flow, opts, state) {
 
     var ptor = protractor.getInstance();
-    var flow = protractor.promise.controlFlow();
 
     // Get document height from browser
     return ptor.executeScript('return document.body.clientHeight').then(function (out) {
@@ -75,11 +62,18 @@ function screengrabOnePage(opts, state) {
             tasks.push(i * opts.increment);
         }
 
+        var outfiles = _.cloneDeep(opts);
+        outfiles.images = [];
+
         // push tasks onto the web driver stack
         tasks.forEach(function (val, i) {
             flow.execute(function () {
-                getScreenFileInfo(i, val, opts);
-                return doScreenGrab(i, val, getScreenFileInfo(i, val, opts));
+                var info = getScreenFileInfo(i, val, opts);
+                outfiles.images.push(info);
+                return doScreenGrab(i, val, info);
+            }).then(function (out) {
+                var imgjson = path.join(opts.outDir, opts.hash.slice(0, 8) + "-images.json");
+                fs.writeJsonFileSync(imgjson, outfiles);
             });
         });
     });

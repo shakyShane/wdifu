@@ -1,10 +1,12 @@
 var path        = require("path");
 var exec        = require("child_process").exec;
 var fs          = require("fs-extra");
-var args        = "/usr/local/bin/perceptualdiff";
-var hashes      = ["3b358", "e1e41"];
-var files       = ["homepage-0.png", "homepage-1.png", "homepage-2.png", "homepage-3.png"];
+var args        = "./perceptuald";
+
+//var hashes      = ["3b358a56", "e1e418df"];
+var files       = ["homepage-1.png", "homepage-2.png", "homepage-3.png", "homepage-4.png"];
 var dir         = process.cwd() + "/screenshots";
+
 var async       = require("async");
 var opts        = "-gamma 2.4";
 

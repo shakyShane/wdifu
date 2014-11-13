@@ -1,0 +1,24 @@
+{
+  "increment": 480,
+  "hash": "e1e418dfa7c7e9640b",
+  "url": "/buy/homepage.php",
+  "outDir": "screenshots",
+  "images": [
+    {
+      "dir": "screenshots/e1e418df",
+      "filename": "homepage-1.png"
+    },
+    {
+      "dir": "screenshots/e1e418df",
+      "filename": "homepage-2.png"
+    },
+    {
+      "dir": "screenshots/e1e418df",
+      "filename": "homepage-3.png"
+    },
+    {
+      "dir": "screenshots/e1e418df",
+      "filename": "homepage-4.png"
+    }
+  ]
+}

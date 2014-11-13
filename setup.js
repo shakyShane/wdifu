@@ -1,24 +1,8 @@
 var async       = require("async");
+var path        = require("path");
 //var compare     = require("compare");
 var logger      = require("./lib/logger").logger;
 var run         = require("./lib/_run")(logger);
-
-var config = {
-    base: "http://selco.static:8000",
-    outDir: "screenshots",
-    cwd: "/Users/shakyshane/code/selco-static",
-    tests: [
-        {
-            hash: "3b358a56e2ede7927cf"
-        },
-        {
-            hash: "e1e418dfa7c7e9640b"
-        }
-    ],
-    paths: [
-        "/buy/homepage.php"
-    ]
-}
 
 logger.info("Working in: {yellow:%s", config.cwd);
 config.paths.forEach(function (path) {
@@ -33,19 +17,23 @@ async.eachSeries(config.tests, function (item, cb) {
 
     run(item, config, function (err, out) {
         if (err) {
-            return cb(err);
             if (out) {
                 console.log(out);
             }
+            return cb(err);
         }
         cb();
     });
 }, function (err) {
     if (err) {
-        console.log(err.message);
+        logger.error(err.message);
         logger.error("Tests failed");
-        process.exit(1);
+        return process.exit(1);
     }
+    var hash1 = config.tests[0].hash.slice(0, 6);
+    var hash2 = config.tests[1].hash.slice(0, 6);
+    logger.info("Screenshots from {red:%s} saved in: {yellow:%s", hash1, path.join(config.outDir, hash1));
+    logger.info("Screenshots from {red:%s} saved in: {yellow:%s", hash2, path.join(config.outDir, hash2));
     process.exit(0);
 });
 
