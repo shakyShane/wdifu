@@ -1,8 +1,10 @@
 {
+  "title": "Selco CSS report",
+  "width": "320px",
   "opts": {
     "cwd": "/Users/shakyshane/code/selco-static",
     "outDir": "screenshots",
-    "base": "http://selco.static",
+    "base": "http://selco.static:8000",
     "tests": [
       {
         "hash": "3b358a56e2ede7927cf"
@@ -17,36 +19,48 @@
   },
   "images": [
     {
-      "path1": "screenshots/3b358a56/homepage-1.png",
-      "path2": "screenshots/e1e418df/homepage-1.png",
+      "path1": "3b358a56/homepage-1.png",
+      "path2": "e1e418df/homepage-1.png",
+      "pass": true,
+      "fail": false,
       "report": {
-        "status": "success"
+        "status": "pass"
       }
     },
     {
-      "path1": "screenshots/3b358a56/homepage-2.png",
-      "path2": "screenshots/e1e418df/homepage-2.png",
+      "path1": "3b358a56/homepage-2.png",
+      "path2": "e1e418df/homepage-2.png",
+      "pass": false,
+      "fail": true,
       "report": {
-        "status": "fail",
+        "status": "failure",
+        "outfile": "diffs/homepage-2.diff.png",
         "report": {
-          "numpix": "5921",
-          "outfile": "screenshots/diffs/homepage-2.diff.png"
-        },
-        "error": false
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "4.03"
+        }
       }
     },
     {
-      "path1": "screenshots/3b358a56/homepage-3.png",
-      "path2": "screenshots/e1e418df/homepage-3.png",
+      "path1": "3b358a56/homepage-3.png",
+      "path2": "e1e418df/homepage-3.png",
+      "pass": true,
+      "fail": false,
       "report": {
-        "status": "success"
+        "status": "pass"
       }
     },
     {
-      "path1": "screenshots/3b358a56/homepage-4.png",
-      "path2": "screenshots/e1e418df/homepage-4.png",
+      "path1": "3b358a56/homepage-4.png",
+      "path2": "e1e418df/homepage-4.png",
+      "pass": true,
+      "fail": false,
       "report": {
-        "status": "success"
+        "status": "pass"
       }
     }
   ]

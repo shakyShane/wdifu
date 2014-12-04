@@ -1,10 +1,10 @@
 var screener = require("./lib/screens");
-var merger = require("opt-merger");
-var async = require("async");
-var comp = require("./lib/compare");
-var path = require("path");
-var compare = require("img-compare");
-var logger = require("./lib/logger").logger;
+var merger   = require("opt-merger");
+var comp     = require("./lib/compare");
+var path     = require("path");
+var fs       = require("fs");
+var fse      = require("fs-extra");
+var logger   = require("./lib/logger").logger;
 
 var defaults = {
     cwd: process.cwd(),

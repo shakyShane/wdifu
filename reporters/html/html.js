@@ -11,25 +11,35 @@ var config = {
     }
 }
 
+function stripBaseDir(outdir, path) {
+    return path.replace(outdir + "/", "");
+}
+
 module.exports = function (opts, out, logger) {
 
+
+    //console.log(opts);
+    //console.log(out);
+
     out.forEach(function (item) {
+
         if (item.report.status === "fail") {
             logger.error("Comparison fail: {yellow:%s} & {yellow:%s} are different.", item.path1, item.path2);
             logger.error("Diff file created: {yellow:%s}", item.report.report.outfile);
-            item.fail = true;
-        } else {
-            item.fail = false;
         }
-        item.path1 = item.path1.replace(opts.outDir + "/", "");
-        item.path2 = item.path2.replace(opts.outDir + "/", "");
+        item.path1 = stripBaseDir(opts.outDir, item.path1);
+        item.path2 = stripBaseDir(opts.outDir, item.path2);
 
-        if (item.report.report) {
-            item.report.report.outfile = item.report.report.outfile.replace(opts.outDir + "/", "");
+        if (item.report.status === "failure") {
+            item.report.outfile = stripBaseDir(opts.outDir, item.report.outfile);
         }
     });
+
     config.siteConfig.opts   = opts;
     config.siteConfig.images = out;
+
+    //fs.writeJSONFileSync(__dirname + "/report.json", config.siteConfig);
+
     crossbow.compileOne("index.html", config, function (err, out) {
         fs.writeFileSync("./screenshots/report.html", out.compiled, "utf-8");
     });

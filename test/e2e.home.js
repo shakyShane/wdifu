@@ -52,25 +52,32 @@ function screengrabOnePage(flow, opts, state) {
     var ptor = protractor.getInstance();
 
     // Get document height from browser
-    return ptor.executeScript('return document.body.clientHeight').then(function (out) {
+    return ptor.executeScript('return document.body.clientHeight').then(function (height) {
 
         // Get amount of screens needed
-        var count = Math.ceil(out/opts.increment);
+        var count = Math.ceil(height/opts.increment);
         var tasks = [];
 
-        for (var i = 0, n = count; i < n; i += 1) {
-            tasks.push(i * opts.increment);
+        var n      = Math.ceil(height / opts.increment);
+        var rem    = height % opts.increment;
+        var jobs   = [];
+
+        for (var i = 0; i < n; i += 1) {
+            jobs.push({
+                "height": (i === n - 1) ? rem : opts.increment,
+                "scroll": i * opts.increment
+            });
         }
 
         var outfiles = _.cloneDeep(opts);
         outfiles.images = [];
 
         // push tasks onto the web driver stack
-        tasks.forEach(function (val, i) {
+        Object.keys(jobs).forEach(function (key, i) {
             flow.execute(function () {
-                var info = getScreenFileInfo(i, val, opts);
+                var info = getScreenFileInfo(i, jobs[key].scroll, opts);
                 outfiles.images.push(info);
-                doScreenGrab(i, val, info);
+                doScreenGrab(i, jobs[key], opts.increment, info);
             }).then(function (out) {
                 var imgjson = path.join(opts.outDir, opts.hash.slice(0, 8) + "-images.json");
                 fs.writeJsonFileSync(imgjson, outfiles);
@@ -86,10 +93,24 @@ function getScreenFileInfo (i, val, opts) {
     }
 }
 
+/**
 
-function doScreenGrab (i, inc, fileOpts) {
+ 1 - scroll: 0,    height: 500
+ 1 - scroll: 500,  height: 500
+ 1 - scroll: 1000, height: 450
+
+ */
+
+function doScreenGrab (i, item, increment, fileOpts) {
     var ptor = protractor.getInstance();
-    return ptor.executeScript('window.scrollTo(0,'+(inc)+');').then(function (out) {
+    var scrollpos = item.scroll;
+
+    if (item.height < increment) {
+        scrollpos = scrollpos - increment;
+        browser.manage().window().setSize(320, item.height + 108);
+    }
+
+    return ptor.executeScript('window.scrollTo(0,'+(scrollpos)+');').then(function (out) {
         ptor.executeScript('return window.scrollY').then(function (out) {});
         return browser.takeScreenshot();
     }).then(function (png) {

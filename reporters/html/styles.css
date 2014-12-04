@@ -4,14 +4,21 @@
 .diff-box {
 	position: relative;
 }
-.diff-box img.diff-img {
+/*.diff-box img.diff-img {*/
+	/*position: absolute;*/
+	/*top: 0;*/
+	/*left: 0;*/
+/*}*/
+.diff-box .diff-wrapper {
+	opacity: 0;
+	background: rgba(255, 255, 255, .86);
 	position: absolute;
 	top: 0;
 	left: 0;
 }
 .diff-img {
-	opacity: 0;
-	transition: opacity .3s;
+	/*opacity: 0;*/
+	/*transition: opacity .3s;*/
 }
 .dif-slider {
 	max-width: 300px;

@@ -17,9 +17,7 @@
     "async": "^0.9.0",
     "eazy-logger": "^1.5.0",
     "fs-extra": "^0.12.0",
-    "img-compare": "^1.2.0",
-    "nodegit": "^0.1.4",
-    "opt-merger": "^1.1.0",
-    "resemblejs": "^1.2.0"
+    "node-resemble-js": "0.0.4",
+    "opt-merger": "^1.1.0"
   }
 }

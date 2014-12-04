@@ -1,19 +1,19 @@
 var config = {
-    base: "http://selco.static",
+    base: "http://grenade.static",
     outDir: "screenshots",
-    cwd: "/Users/shakyshane/code/selco-static",
+    cwd: "/Users/shakyshane/code/grenade-static",
     tests: [
         {
-            hash: "3b358a56e2ede7927cf"
+            hash: "51f8e10c758788fe20c"
         },
         {
-            hash: "e1e418dfa7c7e9640b"
+            hash: "master"
         }
     ],
     paths: [
-        "/buy/homepage.php"
+        "/store-home.php"
     ]
-}
+};
 
 
 require("./index")(config, function (err, out) {

@@ -1,6 +1,6 @@
 <!-- /container -->
 <script type="text/javascript">
-    var diff    = document.querySelectorAll(".diff-img");
+    var diff    = document.querySelectorAll(".diff-wrapper");
     var btns    = document.querySelectorAll("[data-toggle]");
     var sliders = document.querySelectorAll("[data-diff-slider]");
 
@@ -70,11 +70,11 @@
 
             updateElems(item.imgs, item.opacity);
         })
-    })
+    });
 
     function updateElems (elems, opacity) {
         console.log(opacity);
-        [].forEach.call(elems, function (item) {
+        [].forEach.call(diff, function (item) {
             item.style.opacity = opacity;
         });
     }
